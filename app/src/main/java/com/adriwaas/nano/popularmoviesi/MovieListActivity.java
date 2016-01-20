@@ -2,6 +2,7 @@ package com.adriwaas.nano.popularmoviesi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -136,5 +137,13 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
-//    class FetchMovies extends AsyncTask
+    private class FetchMovieListTask extends AsyncTask<Void, Void, String[]> {
+
+        final String TAG = FetchMovieListTask.class.getSimpleName();
+
+        @Override
+        protected String[] doInBackground(Void... params) {
+            return null;
+        }
+    }
 }
