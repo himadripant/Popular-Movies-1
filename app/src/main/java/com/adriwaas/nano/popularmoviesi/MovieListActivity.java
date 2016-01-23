@@ -2,12 +2,14 @@ package com.adriwaas.nano.popularmoviesi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,12 @@ import android.widget.TextView;
 
 import com.adriwaas.nano.popularmoviesi.dummy.DummyContent;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -62,6 +70,7 @@ public class MovieListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+        new FetchMovieListTask().execute();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -143,6 +152,51 @@ public class MovieListActivity extends AppCompatActivity {
 
         @Override
         protected String[] doInBackground(Void... params) {
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader reader = null;
+            String responseJson = null;
+
+            try {
+                final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
+                final String REQUEST_SORT = "sort_by";
+                final String SORT_BY_POPULARITY = "popularity.desc";
+                final String APPID_PARAM = "api_key";
+                final String API_KEY = "7f4efd471a8ad17ebc13eba127e770d8";
+
+                Uri buildUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                                    .appendQueryParameter(REQUEST_SORT, SORT_BY_POPULARITY)
+                                    .appendQueryParameter(APPID_PARAM, API_KEY)
+                                    .build();
+                URL url = new URL(buildUri.toString());
+                // Create the request to OpenWeatherMap, and open the connection
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.connect();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                responseJson = buffer.toString();
+                Log.v(TAG, "json response:: " + responseJson);
+            } catch (IOException ioex) {
+                Log.e(TAG, ioex.getLocalizedMessage(),ioex);
+            }
             return null;
         }
     }
