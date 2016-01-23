@@ -26,6 +26,11 @@ import java.net.URL;
 import java.util.List;
 
 /**
+ * @author Adriwaas Works - Himadri Pant
+ */
+
+
+/**
  * An activity representing a list of Movies. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
@@ -49,15 +54,6 @@ public class MovieListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         View recyclerView = findViewById(R.id.movie_list);
         assert recyclerView != null;
