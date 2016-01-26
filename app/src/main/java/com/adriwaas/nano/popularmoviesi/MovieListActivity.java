@@ -16,6 +16,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adriwaas.nano.popularmoviesi.dummy.DummyContent;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -190,8 +195,13 @@ public class MovieListActivity extends AppCompatActivity {
                 }
                 responseJson = buffer.toString();
                 Log.v(TAG, "json response:: " + responseJson);
+                JSONObject jsonObject = new JSONObject(responseJson);
+                JSONArray jsonArray = jsonObject.getJSONArray("results");
+                Gson gson = new Gson();
             } catch (IOException ioex) {
-                Log.e(TAG, ioex.getLocalizedMessage(),ioex);
+                Log.e(TAG, ioex.getLocalizedMessage(), ioex);
+            } catch (JSONException e) {
+                Log.e(TAG, e.getLocalizedMessage(), e);
             }
             return null;
         }
