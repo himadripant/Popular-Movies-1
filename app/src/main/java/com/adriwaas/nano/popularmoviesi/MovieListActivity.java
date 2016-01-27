@@ -147,12 +147,12 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
-    private class FetchMovieListTask extends AsyncTask<Void, Void, String[]> {
+    private class FetchMovieListTask extends AsyncTask<Void, Void, Movie[]> {
 
         final String TAG = FetchMovieListTask.class.getSimpleName();
 
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected Movie[] doInBackground(Void... params) {
             HttpURLConnection httpURLConnection = null;
             BufferedReader reader = null;
             String responseJson = null;
@@ -198,6 +198,8 @@ public class MovieListActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(responseJson);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 Gson gson = new Gson();
+                Movie[] movies = gson.fromJson(jsonArray.toString(), Movie[].class);
+                Log.v(TAG, "Movie object :: " + movies[0]);
             } catch (IOException ioex) {
                 Log.e(TAG, ioex.getLocalizedMessage(), ioex);
             } catch (JSONException e) {

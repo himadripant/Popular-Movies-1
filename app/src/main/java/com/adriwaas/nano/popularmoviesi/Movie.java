@@ -3,6 +3,8 @@ package com.adriwaas.nano.popularmoviesi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Arrays;
+
 /**
  * Created by Himadri Pant on 28/12/2015.
  */
@@ -92,5 +94,25 @@ public class Movie implements Parcelable {
         dest.writeByte((byte) (hasVideo ? 1 : 0));
         dest.writeFloat(voteAvg);
         dest.writeIntArray(genreIds);
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", isAdult=" + isAdult +
+                ", overview='" + overview + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", originalLanguage='" + originalLanguage + '\'' +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", popularity=" + popularity +
+                ", voteCount=" + voteCount +
+                ", hasVideo=" + hasVideo +
+                ", voteAvg=" + voteAvg +
+                ", genreIds=" + Arrays.toString(genreIds) +
+                '}';
     }
 }
