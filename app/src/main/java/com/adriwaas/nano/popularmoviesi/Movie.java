@@ -3,6 +3,8 @@ package com.adriwaas.nano.popularmoviesi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Arrays;
 
 /**
@@ -11,19 +13,32 @@ import java.util.Arrays;
 public class Movie implements Parcelable {
 
     String id;
+
     String title;
-    String originalTitle;
-    String posterPath;
-    boolean isAdult;
+
+    @SerializedName("original_title") String originalTitle;
+
+    @SerializedName("poster_path") String posterPath;
+
+    @SerializedName("adult") boolean isAdult;
+
     String overview;
-    String releaseDate;
-    String originalLanguage;
-    String backdropPath;
+
+    @SerializedName("release_date") String releaseDate;
+
+    @SerializedName("original_language") String originalLanguage;
+
+    @SerializedName("backdrop_path") String backdropPath;
+
     double popularity;
-    int voteCount;
-    boolean hasVideo;
-    float voteAvg;
-    int[] genreIds;
+
+    @SerializedName("vote_count") int voteCount;
+
+    @SerializedName("video") boolean hasVideo;
+
+    @SerializedName("vote_average") double voteAvg;
+
+    @SerializedName("genre_ids") int[] genreIds;
 
     public Movie(String id, String title, String originalTitle, String posterPath, boolean isAdult,
                  String overview, String releaseDate, String originalLanguage, String backdropPath,
@@ -92,7 +107,7 @@ public class Movie implements Parcelable {
         dest.writeDouble(popularity);
         dest.writeInt(voteCount);
         dest.writeByte((byte) (hasVideo ? 1 : 0));
-        dest.writeFloat(voteAvg);
+        dest.writeDouble(voteAvg);
         dest.writeIntArray(genreIds);
     }
 
