@@ -13,9 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import com.adriwaas.nano.popularmoviesi.dummy.DummyContent;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -28,6 +27,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,10 +52,14 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private final List<Movie> mMovies = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
+
+        new FetchMovieListTask().execute();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,19 +76,18 @@ public class MovieListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-        new FetchMovieListTask().execute();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Movie> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<Movie> items) {
             mValues = items;
         }
 
@@ -97,8 +101,8 @@ public class MovieListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mImage.setImageBitmap(null);
+//            holder.mIdView.setText(mValues.get(position).id);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,20 +133,13 @@ public class MovieListActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public final ImageView mImage;
+            public Movie mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                mImage = (ImageView) view.findViewById(R.id.image);
             }
         }
     }
@@ -206,6 +203,11 @@ public class MovieListActivity extends AppCompatActivity {
                 Log.e(TAG, e.getLocalizedMessage(), e);
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Movie[] movies) {
+            mMovies.addAll(Arrays.asList(movies));
         }
     }
 }
