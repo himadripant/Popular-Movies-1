@@ -153,6 +153,7 @@ public class MovieListActivity extends AppCompatActivity {
             HttpURLConnection httpURLConnection = null;
             BufferedReader reader = null;
             String responseJson = null;
+            Movie[] movies = null;
 
             try {
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
@@ -195,14 +196,14 @@ public class MovieListActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(responseJson);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 Gson gson = new Gson();
-                Movie[] movies = gson.fromJson(jsonArray.toString(), Movie[].class);
+                movies = gson.fromJson(jsonArray.toString(), Movie[].class);
                 Log.v(TAG, "Movie object :: " + movies[0]);
             } catch (IOException ioex) {
                 Log.e(TAG, ioex.getLocalizedMessage(), ioex);
             } catch (JSONException e) {
                 Log.e(TAG, e.getLocalizedMessage(), e);
             }
-            return null;
+            return movies;
         }
 
         @Override
