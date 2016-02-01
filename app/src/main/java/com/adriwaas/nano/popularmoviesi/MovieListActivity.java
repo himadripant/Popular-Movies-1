@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -80,6 +81,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
+        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), GridLayoutManager.DEFAULT_SPAN_COUNT));
     }
 
     public class SimpleItemRecyclerViewAdapter
