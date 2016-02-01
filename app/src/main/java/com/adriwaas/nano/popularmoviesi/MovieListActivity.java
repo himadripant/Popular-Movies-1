@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +55,8 @@ public class MovieListActivity extends AppCompatActivity {
     private boolean mTwoPane;
 
     private final List<Movie> mMovies = new ArrayList<>();
+
+    private final static String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w92/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,8 @@ public class MovieListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mImage.setImageBitmap(null);
+            Picasso.with(getBaseContext()).load(BASE_IMAGE_URL + holder.mItem.posterPath)
+                    .resize(50, 50).into(holder.mImage);
 //            holder.mIdView.setText(mValues.get(position).id);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
