@@ -30,7 +30,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -84,7 +83,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
-        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), GridLayoutManager.DEFAULT_SPAN_COUNT));
+        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 3));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -214,7 +213,9 @@ public class MovieListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Movie[] movies) {
-            mMovies.addAll(Arrays.asList(movies));
+            for (Movie movie : movies)
+                mMovies.add(movie);
+//            mMovies.addAll(Arrays.asList(movies));
         }
     }
 }
