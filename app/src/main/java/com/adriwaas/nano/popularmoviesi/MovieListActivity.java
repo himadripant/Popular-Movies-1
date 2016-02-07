@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +52,8 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private RecyclerView mRecyclerView;
+
     private final List<Movie> mMovies = new ArrayList<>();
 
     private final static String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w92/";
@@ -62,15 +63,20 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
+        // test
+        float densityDpi = this.getResources().getDisplayMetrics().densityDpi;
+        int widthPixels = this.getResources().getDisplayMetrics().widthPixels;
+        // test end
+
         new FetchMovieListTask().execute();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        View recyclerView = findViewById(R.id.movie_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.movie_list);
+        assert mRecyclerView != null;
+//        setupRecyclerView();
 
         if (findViewById(R.id.movie_detail_container) != null) {
             // The detail container view will be present only in the
@@ -81,9 +87,9 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
-        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 3));
+    private void setupRecyclerView() {
+        mRecyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 4));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -106,7 +112,7 @@ public class MovieListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             Picasso.with(getBaseContext()).load(BASE_IMAGE_URL + holder.mItem.posterPath)
-                    .resize(50, 50).into(holder.mImage);
+                    .resize(150, 200).into(holder.mImage);
 //            holder.mIdView.setText(mValues.get(position).id);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +221,7 @@ public class MovieListActivity extends AppCompatActivity {
         protected void onPostExecute(Movie[] movies) {
             for (Movie movie : movies)
                 mMovies.add(movie);
+            setupRecyclerView();
 //            mMovies.addAll(Arrays.asList(movies));
         }
     }
