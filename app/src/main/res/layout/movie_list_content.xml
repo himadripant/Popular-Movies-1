@@ -8,6 +8,7 @@
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/img_margin"/>
+        android:layout_marginBottom="@dimen/img_margin"
+        android:layout_marginRight="@dimen/img_margin"/>
 
 </LinearLayout>

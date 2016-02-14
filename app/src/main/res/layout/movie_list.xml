@@ -6,8 +6,10 @@
     android:name="com.adriwaas.nano.popularmoviesi.MovieListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:paddingBottom="@dimen/fab_margin"
+    android:paddingLeft="@dimen/fab_margin"
+    android:paddingRight="@dimen/fab_margin"
+    android:paddingTop="@dimen/fab_margin"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.adriwaas.nano.popularmoviesi.MovieListActivity"
     tools:listitem="@layout/movie_list_content" />

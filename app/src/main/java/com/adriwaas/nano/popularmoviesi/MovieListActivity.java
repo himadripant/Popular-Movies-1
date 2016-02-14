@@ -57,16 +57,13 @@ public class MovieListActivity extends AppCompatActivity {
     private final List<Movie> mMovies = new ArrayList<>();
 
     private final static String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w92/";
+    private final static int IMAGE_WIDTH = 150;
+    private final static int IMAGE_HEIGHT = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
-
-        // test
-        float densityDpi = this.getResources().getDisplayMetrics().densityDpi;
-        int widthPixels = this.getResources().getDisplayMetrics().widthPixels;
-        // test end
 
         new FetchMovieListTask().execute();
 
@@ -88,8 +85,9 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
+        int spanCount = Math.max(1, mRecyclerView.getMeasuredWidth() / IMAGE_WIDTH);
         mRecyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 4));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), spanCount));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -112,8 +110,7 @@ public class MovieListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             Picasso.with(getBaseContext()).load(BASE_IMAGE_URL + holder.mItem.posterPath)
-                    .resize(150, 200).into(holder.mImage);
-//            holder.mIdView.setText(mValues.get(position).id);
+                    .resize(IMAGE_WIDTH, IMAGE_HEIGHT).into(holder.mImage);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -222,7 +219,6 @@ public class MovieListActivity extends AppCompatActivity {
             for (Movie movie : movies)
                 mMovies.add(movie);
             setupRecyclerView();
-//            mMovies.addAll(Arrays.asList(movies));
         }
     }
 }
