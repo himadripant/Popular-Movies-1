@@ -117,7 +117,7 @@ public class MovieListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(MovieDetailFragment.MOVIE, holder.mItem.id);
                         MovieDetailFragment fragment = new MovieDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -126,8 +126,7 @@ public class MovieListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, MovieDetailActivity.class);
-                        intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
+                        intent.putExtra(MovieDetailFragment.MOVIE, holder.mItem);
                         context.startActivity(intent);
                     }
                 }
