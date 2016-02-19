@@ -73,7 +73,7 @@ public class Movie implements Parcelable {
         this.voteCount = in.readInt();
         this.hasVideo = in.readByte() == 1;
         this.voteAvg = in.readFloat();
-        in.readIntArray(genreIds);
+        this.genreIds = in.createIntArray();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
