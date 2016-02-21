@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A fragment representing a single Movie detail screen.
@@ -22,6 +23,7 @@ public class MovieDetailFragment extends Fragment {
     public static final String MOVIE = "movie";
 
     private Movie mMovie = null;
+    private View mMovieView = null;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,8 +49,12 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.movie_detail, container, false);
+        return mMovieView = inflater.inflate(R.layout.movie_detail, container, false);
+    }
 
-        return rootView;
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((TextView) mMovieView.findViewById(R.id.movieName)).setText(mMovie.originalTitle);
     }
 }
