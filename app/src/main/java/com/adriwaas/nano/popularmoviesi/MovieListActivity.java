@@ -117,7 +117,7 @@ public class MovieListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(MovieDetailFragment.MOVIE, holder.mItem.id);
+                        arguments.putParcelable(MovieDetailFragment.MOVIE, holder.mItem);
                         MovieDetailFragment fragment = new MovieDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
