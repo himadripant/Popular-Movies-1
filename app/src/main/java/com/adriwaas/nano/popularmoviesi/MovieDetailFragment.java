@@ -1,8 +1,6 @@
 package com.adriwaas.nano.popularmoviesi;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,14 +44,9 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments().containsKey(MOVIE)) {
             mMovie = getArguments().getParcelable(MOVIE);
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-//                appBarLayout.setTitle(mItem.content);
-            }
+            Log.i(TAG, mMovie.toString());
         }
     }
 
@@ -73,14 +66,28 @@ public class MovieDetailFragment extends Fragment {
         try {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(dateFormat.parse(mMovie.releaseDate));
-            String year = "Year: " + calendar.get(Calendar.YEAR);
-            Log.i(TAG, year);
+            String year = Integer.toString(calendar.get(Calendar.YEAR));
             ((TextView) mMovieView.findViewById(R.id.movieYear)).setText(year);
         } catch (ParseException e) {
             e.printStackTrace();
             mMovieView.findViewById(R.id.movieYear).setVisibility(View.GONE);
         }
-        ((TextView) mMovieView.findViewById(R.id.movieLanguage)).setText("Language: " + mMovie.originalLanguage);
+        TextView viewMovieLang = ((TextView) mMovieView.findViewById(R.id.movieLanguage));
+        switch (mMovie.originalLanguage) {
+            case "en": viewMovieLang.setText("English"); break;
+            case "fr": viewMovieLang.setText("French"); break;
+            case "it": viewMovieLang.setText("Italian"); break;
+            case "de": viewMovieLang.setText("German"); break;
+            case "nb": viewMovieLang.setText("Norwegian"); break;
+            case "ja": viewMovieLang.setText("Japanese"); break;
+            case "es": viewMovieLang.setText("Spanish"); break;
+            case "zh": viewMovieLang.setText("Mandarin"); break;
+            default: viewMovieLang.setVisibility(View.GONE);
+        }
+
+        /*if ("en".equals(mMovie.originalLanguage))
+            viewMovieLang.setText("English");
+        else viewMovieLang.setVisibility(View.GONE);*/
         ((TextView) mMovieView.findViewById(R.id.moviePopularity)).setText("Popularity: " + mMovie.popularity);
         ((TextView) mMovieView.findViewById(R.id.movieVoteCount)).setText("Votes: " + mMovie.voteCount);
         ((TextView) mMovieView.findViewById(R.id.movieOverview)).setText(mMovie.overview);
