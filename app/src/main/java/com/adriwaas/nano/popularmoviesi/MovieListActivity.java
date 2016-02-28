@@ -94,7 +94,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sortRating) 
+        if (item.getItemId() == R.id.sortRating)
             new FetchMovieListTask(FetchMovieListTask.SORT_BY_RATINGS).execute();
         else new FetchMovieListTask(FetchMovieListTask.SORT_BY_POPULARITY).execute();
         return super.onOptionsItemSelected(item);
@@ -241,6 +241,7 @@ public class MovieListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Movie[] movies) {
+            mMovies.clear();
             for (Movie movie : movies)
                 mMovies.add(movie);
             setupRecyclerView();
