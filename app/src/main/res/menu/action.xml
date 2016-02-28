@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
-    <item
+    <!--<item
         android:id="@+id/sortButtonsMenu"
         android:title="Sort by: "
-        app:showAsAction="always"
-        android:actionLayout="@layout/menu_sort" />
+        android:showAsAction="always"
+        android:actionLayout="@layout/menu_sort" />-->
+
+    <item
+        android:id="@+id/sortPopularity"
+        android:title="Sort by Popularity "
+        android:showAsAction="never" />
+
+    <item
+        android:id="@+id/sortRating"
+        android:title="Sort by Rating "
+        android:showAsAction="always" />
+
 </menu>

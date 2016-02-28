@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -84,6 +86,20 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action, menu);
+        return(super.onCreateOptionsMenu(menu));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sortRating) 
+            new FetchMovieListTask(FetchMovieListTask.SORT_BY_RATINGS).execute();
+        else new FetchMovieListTask(FetchMovieListTask.SORT_BY_POPULARITY).execute();
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setupRecyclerView() {
         int spanCount = Math.max(1, mRecyclerView.getMeasuredWidth() / IMAGE_WIDTH);
         mRecyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMovies));
@@ -153,7 +169,17 @@ public class MovieListActivity extends AppCompatActivity {
 
     private class FetchMovieListTask extends AsyncTask<Void, Void, Movie[]> {
 
+        FetchMovieListTask() {}
+
+        FetchMovieListTask(String sortingPref) {
+            this.mSortingPref = sortingPref;
+        }
+
+        String mSortingPref = null;
+
         final String TAG = FetchMovieListTask.class.getSimpleName();
+        public static final String SORT_BY_POPULARITY = "popularity.desc";
+        public static final String SORT_BY_RATINGS = "vote_average.desc";
 
         @Override
         protected Movie[] doInBackground(Void... params) {
@@ -165,14 +191,14 @@ public class MovieListActivity extends AppCompatActivity {
             try {
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
                 final String REQUEST_SORT = "sort_by";
-                final String SORT_BY_POPULARITY = "popularity.desc";
                 final String APPID_PARAM = "api_key";
                 final String API_KEY = "7f4efd471a8ad17ebc13eba127e770d8";
 
                 Uri buildUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                                    .appendQueryParameter(REQUEST_SORT, SORT_BY_POPULARITY)
-                                    .appendQueryParameter(APPID_PARAM, API_KEY)
-                                    .build();
+                                    .appendQueryParameter(REQUEST_SORT, (SORT_BY_RATINGS
+                                            .equals(mSortingPref) ? SORT_BY_RATINGS : SORT_BY_POPULARITY))
+                        .appendQueryParameter(APPID_PARAM, API_KEY)
+                        .build();
                 URL url = new URL(buildUri.toString());
                 // Create the request to OpenWeatherMap, and open the connection
                 httpURLConnection = (HttpURLConnection) url.openConnection();

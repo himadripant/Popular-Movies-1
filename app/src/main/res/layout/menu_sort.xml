@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <TextView
+    <ToggleButton
+        android:id="@+id/popularityToggle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Sort by: "
-        android:textAppearance="@android:style/TextAppearance.Medium"/>
+        android:text="Popularity" />
+
+    <ToggleButton
+        android:id="@+id/ratedToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Rating" />
 
 </LinearLayout>
