@@ -9,6 +9,9 @@ import java.util.Arrays;
 
 /**
  * Created by Himadri Pant on 28/12/2015.
+ *
+ * Movie bean that implements Parcelable object. This class object will be unmarshalled from JSON
+ * data that is returned by an API provider.
  */
 public class Movie implements Parcelable {
 

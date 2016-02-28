@@ -56,6 +56,9 @@ public class MovieDetailFragment extends Fragment {
         return mMovieView = inflater.inflate(R.layout.movie_detail, container, false);
     }
 
+    /**
+     *  Overriding default onStart method to populate detail fragment layout
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -69,7 +72,7 @@ public class MovieDetailFragment extends Fragment {
             String year = Integer.toString(calendar.get(Calendar.YEAR));
             ((TextView) mMovieView.findViewById(R.id.movieYear)).setText(year);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getLocalizedMessage(), e);
             mMovieView.findViewById(R.id.movieYear).setVisibility(View.GONE);
         }
         TextView viewMovieLang = ((TextView) mMovieView.findViewById(R.id.movieLanguage));
@@ -85,9 +88,6 @@ public class MovieDetailFragment extends Fragment {
             default: viewMovieLang.setVisibility(View.GONE);
         }
 
-        /*if ("en".equals(mMovie.originalLanguage))
-            viewMovieLang.setText("English");
-        else viewMovieLang.setVisibility(View.GONE);*/
         ((TextView) mMovieView.findViewById(R.id.moviePopularity)).setText("Popularity: " + mMovie.popularity);
         ((TextView) mMovieView.findViewById(R.id.movieVoteCount)).setText("Votes: " + mMovie.voteCount);
         ((TextView) mMovieView.findViewById(R.id.movieOverview)).setText(mMovie.overview);

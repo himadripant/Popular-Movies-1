@@ -86,6 +86,11 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Inflating the options menu for sorting options
+     * @param menu default menu object
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action, menu);
@@ -106,6 +111,9 @@ public class MovieListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), spanCount));
     }
 
+    /**
+     * Recycler view adapter implementation
+     */
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
@@ -167,6 +175,9 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Async task to query the tmdb.org for JSON array data
+     */
     private class FetchMovieListTask extends AsyncTask<Void, Void, Movie[]> {
 
         FetchMovieListTask() {}
@@ -192,7 +203,7 @@ public class MovieListActivity extends AppCompatActivity {
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
                 final String REQUEST_SORT = "sort_by";
                 final String APPID_PARAM = "api_key";
-                final String API_KEY = "7f4efd471a8ad17ebc13eba127e770d8";
+                final String API_KEY = "";
 
                 Uri buildUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
                                     .appendQueryParameter(REQUEST_SORT, (SORT_BY_RATINGS
@@ -231,10 +242,13 @@ public class MovieListActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 movies = gson.fromJson(jsonArray.toString(), Movie[].class);
                 Log.v(TAG, "Movie object :: " + movies[0]);
+                inputStream.close();
             } catch (IOException ioex) {
                 Log.e(TAG, ioex.getLocalizedMessage(), ioex);
             } catch (JSONException e) {
                 Log.e(TAG, e.getLocalizedMessage(), e);
+            } finally {
+                httpURLConnection.disconnect();
             }
             return movies;
         }
