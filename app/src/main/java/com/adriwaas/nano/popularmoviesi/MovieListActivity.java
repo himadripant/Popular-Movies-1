@@ -2,9 +2,12 @@ package com.adriwaas.nano.popularmoviesi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -67,15 +70,15 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        new FetchMovieListTask().execute();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
         mRecyclerView = (RecyclerView) findViewById(R.id.movie_list);
         assert mRecyclerView != null;
-//        setupRecyclerView();
+        if (!isOnline(this))
+            showOfflineMsg();
+        else new FetchMovieListTask().execute();
 
         if (findViewById(R.id.movie_detail_container) != null) {
             // The detail container view will be present only in the
@@ -84,6 +87,28 @@ public class MovieListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+    }
+
+    /**
+     * Checks network connectivity
+     * @param context application context
+     * @return
+     */
+    private boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+
+        return isConnected;
+    }
+
+    /**
+     * displays offline snackbar
+     */
+    public void showOfflineMsg() {
+        Snackbar.make(mRecyclerView, R.string.error_no_data, Snackbar.LENGTH_LONG).show();
     }
 
     /**
@@ -203,7 +228,7 @@ public class MovieListActivity extends AppCompatActivity {
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
                 final String REQUEST_SORT = "sort_by";
                 final String APPID_PARAM = "api_key";
-                final String API_KEY = "";
+                final String API_KEY = "7f4efd471a8ad17ebc13eba127e770d8";
 
                 Uri buildUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
                                     .appendQueryParameter(REQUEST_SORT, (SORT_BY_RATINGS
@@ -256,9 +281,13 @@ public class MovieListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Movie[] movies) {
             mMovies.clear();
-            for (Movie movie : movies)
-                mMovies.add(movie);
-            setupRecyclerView();
+            if (movies == null) {
+                showOfflineMsg();
+            } else {
+                for (Movie movie : movies)
+                    mMovies.add(movie);
+                setupRecyclerView();
+            }
         }
     }
 }
