@@ -228,7 +228,7 @@ public class MovieListActivity extends AppCompatActivity {
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie";
                 final String REQUEST_SORT = "sort_by";
                 final String APPID_PARAM = "api_key";
-                final String API_KEY = "7f4efd471a8ad17ebc13eba127e770d8";
+                final String API_KEY = "";
 
                 Uri buildUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
                                     .appendQueryParameter(REQUEST_SORT, (SORT_BY_RATINGS
